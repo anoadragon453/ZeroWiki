@@ -163,12 +163,6 @@ class ZeroWiki extends ZeroFrame
       WikiUi.showHistory(pages)
 
   #
-  # Show the help page.
-  #
-  showHelpPage: ->
-    WikiUi.showHelpPage()
-
-  #
   # Load all internal links from content.
   #
 
@@ -211,10 +205,6 @@ class ZeroWiki extends ZeroFrame
 
     if match = url.match /Index(&.*)?$/
       @showIndexPage()
-      return true
-
-    if match = url.match /Help(&.*)?$/
-      @showHelpPage()
       return true
 
     if @isHistory(url)

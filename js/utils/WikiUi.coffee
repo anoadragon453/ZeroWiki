@@ -135,16 +135,6 @@ class WikiUi
     @contentPanel.innerHTML = body
 
   #
-  # Show the help page.
-  #
-
-  showHelpPage: ->
-    @hideTools()
-    @hidePanels()
-    @contentPanel.style.display = "block"
-    @contentPanel.innerHTML = document.getElementById("help").innerHTML
-
-  #
   # Show the login message.
   #
 
