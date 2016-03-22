@@ -16,13 +16,13 @@ class LinkHelper
     if match = content.match /(\[\[(.+?)\]\])/g
       unique = []
       for m in match
-        text = m.match /\[\[(.*?)\]\]/
-        slug = slugger(text[1])
-        if slug not in unique
-          links.push({tag: m, slug: slug, text: text[1]})
-          unique.push(slug)
+        text = m.match /\[\[(.*?)(\|(.*?))?\]\]/
+        label = text[1]
+        if text[3] isnt undefined
+          label = text[3]
+        links.push({tag: m, slug: slugger(text[1]), text: label})
 
-    return links
+    return @getUniqueLinks(links)
 
   #
   # Return an array of unique links from an array of links.
@@ -32,8 +32,8 @@ class LinkHelper
     unique = []
     uniqueLinks = []
     for link in links
-      if link.slug not in unique
-        unique.push(link.slug)
+      if link.tag not in unique
+        unique.push(link.tag)
         uniqueLinks.push(link)
 
     return uniqueLinks

@@ -116,7 +116,6 @@
 }).call(this);
 
 
-
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/libs/marked.min.js ---- */
 
 
@@ -458,25 +457,25 @@ if (typeof module !== 'undefined') {
     }
 
     LinkHelper.prototype.extractLinks = function(content) {
-      var i, len, links, m, match, slug, text, unique;
+      var i, label, len, links, m, match, text, unique;
       links = [];
       if (match = content.match(/(\[\[(.+?)\]\])/g)) {
         unique = [];
         for (i = 0, len = match.length; i < len; i++) {
           m = match[i];
-          text = m.match(/\[\[(.*?)\]\]/);
-          slug = slugger(text[1]);
-          if (indexOf.call(unique, slug) < 0) {
-            links.push({
-              tag: m,
-              slug: slug,
-              text: text[1]
-            });
-            unique.push(slug);
+          text = m.match(/\[\[(.*?)(\|(.*?))?\]\]/);
+          label = text[1];
+          if (text[3] !== void 0) {
+            label = text[3];
           }
+          links.push({
+            tag: m,
+            slug: slugger(text[1]),
+            text: label
+          });
         }
       }
-      return links;
+      return this.getUniqueLinks(links);
     };
 
     LinkHelper.prototype.getUniqueLinks = function(links) {
@@ -485,8 +484,8 @@ if (typeof module !== 'undefined') {
       uniqueLinks = [];
       for (i = 0, len = links.length; i < len; i++) {
         link = links[i];
-        if (ref = link.slug, indexOf.call(unique, ref) < 0) {
-          unique.push(link.slug);
+        if (ref = link.tag, indexOf.call(unique, ref) < 0) {
+          unique.push(link.tag);
           uniqueLinks.push(link);
         }
       }
@@ -674,13 +673,6 @@ if (typeof module !== 'undefined') {
       return this.contentPanel.innerHTML = body;
     };
 
-    WikiUi.prototype.showHelpPage = function() {
-      this.hideTools();
-      this.hidePanels();
-      this.contentPanel.style.display = "block";
-      return this.contentPanel.innerHTML = document.getElementById("help").innerHTML;
-    };
-
     WikiUi.prototype.loggedInMessage = function(cert) {
       if (cert) {
         return document.getElementById("select_user").innerHTML = "You are logged in as " + cert;
@@ -719,7 +711,6 @@ if (typeof module !== 'undefined') {
   window.WikiUi = new WikiUi;
 
 }).call(this);
-
 
 
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/ZeroWiki.coffee ---- */
@@ -919,10 +910,6 @@ if (typeof module !== 'undefined') {
       })(this));
     };
 
-    ZeroWiki.prototype.showHelpPage = function() {
-      return WikiUi.showHelpPage();
-    };
-
     ZeroWiki.prototype.showIndexPage = function() {
       var query;
       query = "SELECT id, body, slug, MAX(date_added), json_id FROM pages GROUP BY pages.slug ORDER BY date_added DESC";
@@ -975,10 +962,6 @@ if (typeof module !== 'undefined') {
       }
       if (match = url.match(/Index(&.*)?$/)) {
         this.showIndexPage();
-        return true;
-      }
-      if (match = url.match(/Help(&.*)?$/)) {
-        this.showHelpPage();
         return true;
       }
       if (this.isHistory(url)) {
