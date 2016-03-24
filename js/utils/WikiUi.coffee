@@ -78,6 +78,20 @@ class WikiUi
     @contentEditor.focus()
 
   #
+  # Show new page message
+  #
+
+  showNewPageMessage: ->
+    @hideTools()
+    @hidePanels()
+    body  = "<div class=\"new-page-message\">"
+    body += "<p class=\"muted\">This page doesn't exist yet.</p>"
+    body += "<p><a href=\"#\" class=\"pure-button\" onclick=\"return Page.pageEdit()\">Create this page</a></p>"
+    body += "</div>"
+    @contentPanel.innerHTML = body
+    @contentPanel.style.display = "block"
+
+  #
   # Show the history panel.
   #
 

@@ -549,7 +549,6 @@ if (typeof module !== 'undefined') {
 }).call(this);
 
 
-
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/utils/WikiUi.coffee ---- */
 
 
@@ -615,6 +614,18 @@ if (typeof module !== 'undefined') {
       this.hidePanels();
       this.contentEditor.style.display = "block";
       return this.contentEditor.focus();
+    };
+
+    WikiUi.prototype.showNewPageMessage = function() {
+      var body;
+      this.hideTools();
+      this.hidePanels();
+      body = "<div class=\"new-page-message\">";
+      body += "<p class=\"muted\">This page doesn't exist yet.</p>";
+      body += "<p><a href=\"#\" class=\"pure-button\" onclick=\"return Page.pageEdit()\">Create this page</a></p>";
+      body += "</div>";
+      this.contentPanel.innerHTML = body;
+      return this.contentPanel.style.display = "block";
     };
 
     WikiUi.prototype.showHistory = function(messages) {
@@ -711,6 +722,7 @@ if (typeof module !== 'undefined') {
   window.WikiUi = new WikiUi;
 
 }).call(this);
+
 
 
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/ZeroWiki.coffee ---- */
@@ -813,9 +825,7 @@ if (typeof module !== 'undefined') {
             if (rev !== null) {
               return _this.cmd("wrapperNotification", ["error", "Wrong revision number."]);
             } else {
-              if (slug !== "home") {
-                return _this.pageEdit();
-              }
+              return WikiUi.showNewPageMessage();
             }
           }
         };

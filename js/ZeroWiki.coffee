@@ -78,8 +78,7 @@ class ZeroWiki extends ZeroFrame
         if rev isnt null
           @cmd "wrapperNotification", ["error", "Wrong revision number."]
         else
-          if slug isnt "home"
-            @pageEdit()
+          WikiUi.showNewPageMessage()
 
   #
   # Update the page contents or create a new page

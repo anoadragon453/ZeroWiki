@@ -136,6 +136,10 @@ a {
   border-bottom: 2px solid rgb(245, 245, 245);
 }
 
+.new-page-message {
+  text-align: center;
+  padding: 3em 0;
+}
 /* BUTTONS */
 
 .pure-button { font-weight: normal; }
