@@ -270,7 +270,8 @@ class ZeroWiki extends ZeroFrame
         cssClass = ""
         cssClass = "red" unless link.slug in existingPages
         replace = "<a href=\"?Page:#{link.slug}\" class=\"#{cssClass}\">#{link.text}</a>"
-        HTMLcontent = HTMLcontent.replace(link.tag, replace)
+        link.tag = link.tag.replace /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"
+        HTMLcontent = HTMLcontent.replace(new RegExp(link.tag, "g"), replace)
 
       WikiUi.loadContent(content, HTMLcontent, rev)
 

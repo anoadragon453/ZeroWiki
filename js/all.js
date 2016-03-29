@@ -116,6 +116,7 @@
 }).call(this);
 
 
+
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/libs/marked.min.js ---- */
 
 
@@ -547,6 +548,7 @@ if (typeof module !== 'undefined') {
   window.LinkHelper = new LinkHelper;
 
 }).call(this);
+
 
 
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/utils/WikiUi.coffee ---- */
@@ -1048,7 +1050,8 @@ if (typeof module !== 'undefined') {
               cssClass = "red";
             }
             replace = "<a href=\"?Page:" + link.slug + "\" class=\"" + cssClass + "\">" + link.text + "</a>";
-            HTMLcontent = HTMLcontent.replace(link.tag, replace);
+            link.tag = link.tag.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+            HTMLcontent = HTMLcontent.replace(new RegExp(link.tag, "g"), replace);
           }
           return WikiUi.loadContent(content, HTMLcontent, rev);
         };
