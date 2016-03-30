@@ -116,7 +116,6 @@
 }).call(this);
 
 
-
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/libs/marked.min.js ---- */
 
 
@@ -550,7 +549,6 @@ if (typeof module !== 'undefined') {
 }).call(this);
 
 
-
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/utils/WikiUi.coffee ---- */
 
 
@@ -724,7 +722,6 @@ if (typeof module !== 'undefined') {
   window.WikiUi = new WikiUi;
 
 }).call(this);
-
 
 
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/ZeroWiki.coffee ---- */
@@ -937,23 +934,27 @@ if (typeof module !== 'undefined') {
           slugs = LinkHelper.getSlugs(true).join(",");
           query = "SELECT slug FROM pages WHERE pages.slug in (" + slugs + ") GROUP BY slug";
           return _this.cmd("dbQuery", [query], function(slugs) {
-            var cssClass, existingPages, j, k, len1, len2, links, orphaned, ref, ref1, ref2, tag, uniqueOrphans;
+            var cssClass, existingPages, j, k, len1, len2, links, normalized, orphaned, ref, ref1, ref2, ref3, tag, uniqueOrphans;
             existingPages = LinkHelper.getSlugs(false, slugs);
             links = [];
+            normalized = [];
             for (j = 0, len1 = linkTags.length; j < len1; j++) {
               tag = linkTags[j];
-              cssClass = "";
-              if (ref = tag.slug, indexOf.call(existingPages, ref) < 0) {
-                cssClass = "red";
+              if (ref = tag.text.toLowerCase(), indexOf.call(normalized, ref) < 0) {
+                cssClass = "";
+                if (ref1 = tag.slug, indexOf.call(existingPages, ref1) < 0) {
+                  cssClass = "red";
+                }
+                links.push("<a href=\"?Page:" + tag.slug + "\" class=\"" + cssClass + "\">" + tag.text + "</a>");
+                normalized.push(tag.text.toLowerCase());
               }
-              links.push("<a href=\"?Page:" + tag.slug + "\" class=\"" + cssClass + "\">" + tag.text + "</a>");
             }
             slugs = LinkHelper.getSlugs();
             orphaned = [];
             uniqueOrphans = [];
             for (k = 0, len2 = pages.length; k < len2; k++) {
               page = pages[k];
-              if ((ref1 = page.slug, indexOf.call(slugs, ref1) < 0) && (ref2 = page.slug, indexOf.call(uniqueOrphans, ref2) < 0) && page.slug !== "home") {
+              if ((ref2 = page.slug, indexOf.call(slugs, ref2) < 0) && (ref3 = page.slug, indexOf.call(uniqueOrphans, ref3) < 0) && page.slug !== "home") {
                 orphaned.push("<a href=\"?Page:" + page.slug + "\">[[" + page.slug + "]]</a>");
                 uniqueOrphans.push(page.slug);
               }

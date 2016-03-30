@@ -179,11 +179,14 @@ class ZeroWiki extends ZeroFrame
       @cmd "dbQuery", [query], (slugs) =>
         existingPages = LinkHelper.getSlugs(false, slugs)
         links= []
+        normalized = []
 
         for tag in linkTags
-          cssClass = ""
-          cssClass = "red" unless tag.slug in existingPages
-          links.push("<a href=\"?Page:#{tag.slug}\" class=\"#{cssClass}\">#{tag.text}</a>")
+          if tag.text.toLowerCase() not in normalized
+            cssClass = ""
+            cssClass = "red" unless tag.slug in existingPages
+            links.push("<a href=\"?Page:#{tag.slug}\" class=\"#{cssClass}\">#{tag.text}</a>")
+            normalized.push(tag.text.toLowerCase())
 
         slugs = LinkHelper.getSlugs()
         orphaned = []
