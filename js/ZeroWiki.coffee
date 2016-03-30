@@ -196,7 +196,7 @@ class ZeroWiki extends ZeroFrame
             orphaned.push("<a href=\"?Page:#{page.slug}\">[[#{page.slug}]]</a>")
             uniqueOrphans.push(page.slug)
 
-        WikiUi.showIndexPage(links, orphaned)
+        WikiUi.showIndexPage(links, orphaned.sort())
 
   #
   # Check if this is a request to static content

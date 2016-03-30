@@ -959,7 +959,7 @@ if (typeof module !== 'undefined') {
                 uniqueOrphans.push(page.slug);
               }
             }
-            return WikiUi.showIndexPage(links, orphaned);
+            return WikiUi.showIndexPage(links, orphaned.sort());
           });
         };
       })(this));
