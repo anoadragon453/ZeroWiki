@@ -103,7 +103,7 @@ class WikiUi
     history_list = document.getElementById("history_list")
     body = ""
     for message in messages
-      parsedDate = @parseDate(message.date_added)
+      parsedDate = Time.since(message.date_added / 1000)
       body += "<li>Edited by #{message.cert_user_id} <span class=\"muted\">#{parsedDate}</span>"
       body += "<a href=\"?Page:#{message.slug}&Rev:#{message.id}\" class=\"pure-button button-success\">"
       body += "View</a></li>"
@@ -168,14 +168,5 @@ class WikiUi
       quotaElement .innerHTML = "(#{(current / 1024).toFixed(1)}kb/#{(max / 1024).toFixed(1)}kb)"
     else
       quotaElement.innerHTML = ""
-
-  #
-  # Helper method to parse dates.
-  #
-
-  parseDate: (d) ->
-    parts = (new Date(d)).toString().split(" ")
-    display = parts.slice(1, 4)
-    display.join(" ")
 
 window.WikiUi = new WikiUi

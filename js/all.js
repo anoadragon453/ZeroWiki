@@ -549,6 +549,78 @@ if (typeof module !== 'undefined') {
 }).call(this);
 
 
+/* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/utils/Time.coffee ---- */
+
+
+(function() {
+  var Time;
+
+  Time = (function() {
+    function Time() {}
+
+    Time.prototype.since = function(time) {
+      var back, now, secs;
+      now = +(new Date) / 1000;
+      secs = now - time;
+      if (secs < 60) {
+        back = "Just now";
+      } else if (secs < 60 * 60) {
+        back = (Math.round(secs / 60)) + " minutes ago";
+      } else if (secs < 60 * 60 * 24) {
+        back = (Math.round(secs / 60 / 60)) + " hours ago";
+      } else if (secs < 60 * 60 * 24 * 3) {
+        back = (Math.round(secs / 60 / 60 / 24)) + " days ago";
+      } else {
+        back = "on " + this.date(time);
+      }
+      back = back.replace(/1 ([a-z]+)s/, "1 $1");
+      return back;
+    };
+
+    Time.prototype.date = function(timestamp, format) {
+      var display, parts;
+      if (format == null) {
+        format = "short";
+      }
+      parts = (new Date(timestamp * 1000)).toString().split(" ");
+      if (format === "short") {
+        display = parts.slice(1, 4);
+      } else {
+        display = parts.slice(1, 5);
+      }
+      return display.join(" ").replace(/( [0-9]{4})/, ",$1");
+    };
+
+    Time.prototype.timestamp = function(date) {
+      if (date == null) {
+        date = "";
+      }
+      if (date === "now" || date === "") {
+        return parseInt(+(new Date) / 1000);
+      } else {
+        return parseInt(Date.parse(date) / 1000);
+      }
+    };
+
+    Time.prototype.readtime = function(text) {
+      var chars;
+      chars = text.length;
+      if (chars > 1500) {
+        return parseInt(chars / 1500) + " min read";
+      } else {
+        return "less than 1 min read";
+      }
+    };
+
+    return Time;
+
+  })();
+
+  window.Time = new Time;
+
+}).call(this);
+
+
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/utils/WikiUi.coffee ---- */
 
 
@@ -638,7 +710,7 @@ if (typeof module !== 'undefined') {
       body = "";
       for (i = 0, len = messages.length; i < len; i++) {
         message = messages[i];
-        parsedDate = this.parseDate(message.date_added);
+        parsedDate = Time.since(message.date_added / 1000);
         body += "<li>Edited by " + message.cert_user_id + " <span class=\"muted\">" + parsedDate + "</span>";
         body += "<a href=\"?Page:" + message.slug + "&Rev:" + message.id + "\" class=\"pure-button button-success\">";
         body += "View</a></li>";
@@ -708,13 +780,6 @@ if (typeof module !== 'undefined') {
       }
     };
 
-    WikiUi.prototype.parseDate = function(d) {
-      var display, parts;
-      parts = (new Date(d)).toString().split(" ");
-      display = parts.slice(1, 4);
-      return display.join(" ");
-    };
-
     return WikiUi;
 
   })();
@@ -722,6 +787,7 @@ if (typeof module !== 'undefined') {
   window.WikiUi = new WikiUi;
 
 }).call(this);
+
 
 
 /* ---- data/13CMqw4ttHsLRCbpBFQT7Wi76QCAYzL8YX/js/ZeroWiki.coffee ---- */
