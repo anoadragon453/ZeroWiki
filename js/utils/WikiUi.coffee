@@ -118,6 +118,12 @@ class WikiUi
   loadContent: (originalContent, HTMLContent, rev=null) ->
     @contentEditor.innerHTML = originalContent
     @contentPanel.innerHTML  = HTMLContent
+    for link in @contentPanel.querySelectorAll('a:not(.internal)')
+      link.className += ' external'
+      if link.href.indexOf(location.origin) == 0
+        link.className += ' zeronet'
+      else
+        link.className += ' clearnet'
     @showContent(rev)
 
   #
