@@ -270,8 +270,8 @@ class ZeroWiki extends ZeroFrame
       existingPages = LinkHelper.getSlugs(false, slugs)
 
       for link in links
-        cssClass = ""
-        cssClass = "red" unless link.slug in existingPages
+        cssClass = "internal"
+        cssClass += " red" unless link.slug in existingPages
         replace = "<a href=\"?Page:#{link.slug}\" class=\"#{cssClass}\">#{link.text}</a>"
         link.tag = link.tag.replace /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"
         HTMLcontent = HTMLcontent.replace(new RegExp(link.tag, "g"), replace)
